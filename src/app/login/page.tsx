@@ -20,7 +20,7 @@ const formSchema = z.object({
 	username: z.string().min(2, {
 		message: "Username must be at least 2 characters.",
 	}),
-	password: z.string().min(8, {
+	password: z.string().min(3, {
 		message: "Password must be at least 2 characters.",
 	}),
 });
@@ -34,10 +34,25 @@ export default function Page() {
 		},
 	});
 
-	function onSubmit(values: z.infer<typeof formSchema>) {
+	async function onSubmit(values: z.infer<typeof formSchema>) {
 		// Do something with the form values.
 		// ✅ This will be type-safe and validated.
 		console.log(values);
+		try {
+			const res = await fetch("/login", {
+				method: "POST",
+				headers: {
+					Accept: "application.json",
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(values),
+			});
+
+			const json = await res.json();
+			console.log("JSON", json);
+		} catch (error) {
+			console.error("Error in Login", error);
+		}
 	}
 	return (
 		<div className="flex flex-col max-w-[500px] mx-auto min-h-full">
