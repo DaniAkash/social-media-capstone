@@ -16,9 +16,14 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 
+import axios from "axios";
+import { useMutation } from "@tanstack/react-query";
+
+import { useRouter } from "next/navigation";
+
 const formSchema = z.object({
-	username: z.string().min(2, {
-		message: "Username must be at least 2 characters.",
+	email: z.string().min(2, {
+		message: "Email must be at least 2 characters.",
 	}),
 	password: z.string().min(3, {
 		message: "Password must be at least 2 characters.",
@@ -26,50 +31,50 @@ const formSchema = z.object({
 });
 
 export default function Page() {
+	const router = useRouter();
+	const loginMutation = useMutation({
+		mutationFn: (data: z.infer<typeof formSchema>) => {
+			return axios.post(`${process.env.NEXT_PUBLIC_SITE_URL}/api/login`, data);
+		},
+		onSuccess: (data) => {
+			console.log(data);
+
+			if (data.data.redirect) {
+				router.push(`/${data.data.redirect}`);
+			}
+		},
+	});
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
-			username: "",
+			email: "",
 			password: "",
 		},
 	});
 
 	async function onSubmit(values: z.infer<typeof formSchema>) {
-		// Do something with the form values.
-		// ✅ This will be type-safe and validated.
-		console.log(values);
 		try {
-			const res = await fetch("/login", {
-				method: "POST",
-				headers: {
-					Accept: "application.json",
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(values),
-			});
-
-			const json = await res.json();
-			console.log("JSON", json);
+			loginMutation.mutate(values);
 		} catch (error) {
 			console.error("Error in Login", error);
 		}
 	}
+
 	return (
-		<div className="flex flex-col max-w-[500px] mx-auto min-h-full">
+		<div className="flex flex-col max-w-[500px] mx-auto min-h-screen justify-center">
 			<Form {...form}>
 				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 					<FormField
 						control={form.control}
-						name="username"
+						name="email"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel>Username</FormLabel>
+								<FormLabel>Email</FormLabel>
 								<FormControl>
 									<Input placeholder="shadcn" {...field} />
 								</FormControl>
-								<FormDescription>
-									This is your public display name.
-								</FormDescription>
+
 								<FormMessage />
 							</FormItem>
 						)}
@@ -83,12 +88,19 @@ export default function Page() {
 								<FormControl>
 									<Input {...field} type="password" />
 								</FormControl>
-								<FormDescription>Password here</FormDescription>
+
 								<FormMessage />
 							</FormItem>
 						)}
 					/>
-					<Button type="submit">Submit</Button>
+					<Button type="submit" disabled={loginMutation.isLoading}>
+						{loginMutation.isLoading ? "Verifying..." : "Submit"}
+					</Button>
+					{loginMutation.isError && (
+						<FormDescription className="text-destructive-foreground bg-destructive p-2 rounded-sm max-w-[max-content]">
+							Something went wrong
+						</FormDescription>
+					)}
 				</form>
 			</Form>
 		</div>
