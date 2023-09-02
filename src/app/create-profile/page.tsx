@@ -26,8 +26,8 @@ const formSchema = z.object({
 	name: z.string().min(2, {
 		message: "Email must be at least 2 characters.",
 	}),
-	bio: z.string().min(0).max(20, {
-		message: "Bio can be only 20 characters long",
+	bio: z.string().min(0).max(100, {
+		message: "Bio can be only 100 characters long",
 	}),
 	userHandle: z
 		.string()
@@ -51,7 +51,6 @@ export default function Page() {
 			);
 		},
 		onSuccess: (data) => {
-			console.log(data);
 			if (data.data.profileCompleted) {
 				router.replace("/feed");
 			} else {
@@ -104,7 +103,7 @@ export default function Page() {
 							<FormItem>
 								<FormLabel>Bio</FormLabel>
 								<FormControl>
-									<Input {...field} type="text" />
+									<Input {...field} type="text" maxLength={100} />
 								</FormControl>
 
 								<FormMessage />
