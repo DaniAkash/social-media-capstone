@@ -37,3 +37,19 @@ This is a general purpose social media app
   - Acts as a redirection page
     - If logged in => redirect to /feed
     - If not logged in => redirect to /login
+
+# Login + Bio flow
+
+- User logs into the app
+  - Set JWT token
+    - Check if user has profile
+      - Yes
+        - Redirect the user to `/feed` page
+      - No
+        - Redirect the user to `/create-profile` page
+          - Form to create profile -> user_handle, name, bio
+            - Redirect the user to `/feed` page
+- Create the `/profile` page
+  - User can see thier own profile
+- Create the `/profile/[userHande]`
+  - User can see other's profile
