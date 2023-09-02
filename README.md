@@ -23,3 +23,17 @@ This is a general purpose social media app
 - Prisma
 - Postgres
 - Shadcn UI
+
+## Page routes
+
+- Login
+  - /login
+- Feed
+  - /feed
+- Profile
+  - /profile
+  - /profile/[userHandle]
+- Home page
+  - Acts as a redirection page
+    - If logged in => redirect to /feed
+    - If not logged in => redirect to /login
