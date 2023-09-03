@@ -63,7 +63,11 @@ This is a general purpose social media app
   - Once it is created redirect user to `/profile` page
 
 - In the `/profile` page
+
   - We'll add user's personal feed with their own posts
+
+- In the `profile/[userHandle]` page
+  - We will display the posts of the target user
 
 # After setting up follow relation
 
@@ -127,6 +131,12 @@ const posts = await prisma.post.findMany({
 	},
 });
 ```
+
+## Implementing the follow feature & the General Home Feed
+
+- User can visit other bio and click follow -> the buton will turn follow to following
+- Display follower count anf following count on all profile pages
+- Display all the posts fro accounts you are following on the feed page
 
 TODO -
 

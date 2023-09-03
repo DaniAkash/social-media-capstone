@@ -18,26 +18,38 @@ export async function GET() {
 	}
 
 	try {
-		const user = await prisma.user.findFirst({
+		const profile = await prisma.profile.findFirst({
 			where: {
-				email: {
-					equals: tokenPayload.payload.email as string,
+				id: {
+					equals: Number(tokenPayload.payload.profileId),
 				},
 			},
 			include: {
-				profile: true,
+				user: true,
+				posts: true,
 			},
 		});
+		// const user = await prisma.user.findFirst({
+		// 	where: {
+		// 		email: {
+		// 			equals: tokenPayload.payload.email as string,
+		// 		},
+		// 	},
+		// 	include: {
+		// 		profile: true,
+		// 	},
+		// });
 
-		if (user) {
+		if (profile) {
 			return NextResponse.json(
 				{
 					user: {
-						email: user.email,
-						bio: user.profile?.bio || "",
-						name: user.profile?.name || "",
-						userHandle: user.profile?.userHandle || "",
-						profilePic: user.profile?.profilePic || "",
+						email: profile.user.email,
+						bio: profile.bio || "",
+						name: profile.name || "",
+						userHandle: profile.userHandle || "",
+						profilePic: profile.profilePic || "",
+						posts: profile.posts,
 					},
 				},
 				{ status: 200 }

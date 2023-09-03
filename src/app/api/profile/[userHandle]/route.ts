@@ -16,6 +16,7 @@ export async function GET(
 			},
 			include: {
 				user: true,
+				posts: true,
 			},
 		});
 
@@ -28,6 +29,7 @@ export async function GET(
 						name: profile.name,
 						userHandle: profile.userHandle,
 						profilePic: profile.profilePic || "",
+						posts: profile.posts,
 					},
 				},
 				{ status: 200 }
