@@ -17,6 +17,7 @@ import {
 } from "@/components/ui/form";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
 	title: z.string().min(1, {
@@ -28,12 +29,16 @@ const formSchema = z.object({
 });
 
 export default function Page() {
+	const router = useRouter();
+
 	const createPostMutation = useMutation({
 		mutationFn: (data: z.infer<typeof formSchema>) => {
 			return axios.post(`/api/create-post`, data);
 		},
 		onSuccess: (data) => {
-			console.log(data);
+			if (data.data.message === "success") {
+				router.push("/profile");
+			}
 			// if (data.data.profileCompleted) {
 			// 	router.replace("/feed");
 			// } else {
@@ -54,7 +59,6 @@ export default function Page() {
 
 	function onSubmit(values: z.infer<typeof formSchema>) {
 		createPostMutation.mutate(values);
-		console.log(values);
 	}
 
 	return (

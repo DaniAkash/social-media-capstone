@@ -1,5 +1,5 @@
 import { prisma } from "@/lib/db";
-import { verify } from "@/lib/jwt";
+import { sign, verify } from "@/lib/jwt";
 import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
@@ -71,6 +71,21 @@ export async function POST(req: NextRequest) {
 					},
 				},
 			},
+		});
+
+		const token = await sign({
+			email: verifiedTokenData.payload.email,
+			id: verifiedTokenData.payload.id,
+			profileId: newProfile.id,
+		});
+
+		const onwMonth = 30 * 24 * 60 * 60 * 1000;
+
+		cookies().set({
+			name: "token",
+			value: token,
+			httpOnly: true,
+			expires: Date.now() + onwMonth,
 		});
 
 		return NextResponse.json(

@@ -54,6 +54,7 @@ export async function POST(req: NextRequest) {
 		const token = await sign({
 			email: requestedUser.email,
 			id: requestedUser.id,
+			profileId: requestedUser.profile?.id || null,
 		});
 
 		const onwMonth = 30 * 24 * 60 * 60 * 1000;
