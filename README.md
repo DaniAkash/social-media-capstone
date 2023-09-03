@@ -65,6 +65,69 @@ This is a general purpose social media app
 - In the `/profile` page
   - We'll add user's personal feed with their own posts
 
+# After setting up follow relation
+
+- If we want to get all the followers for a giver user
+
+```js
+const profileWithFollowers = await prisma.profile.findUnique({
+	where: {
+		id: profileId,
+	},
+	include: {
+		followers: {
+			select: {
+				follower: {
+					select: {
+						id: true,
+						bio: true,
+						// include any other fields from the Profile model that you want
+					},
+				},
+			},
+		},
+	},
+});
+```
+
+- If I want to query all the posts created by profiles I am following
+
+```js
+// Get all the profiles I am following
+const followingProfiles = await prisma.profile.findUnique({
+	where: { userId: userId },
+	include: {
+		following: {
+			select: {
+				followingId: true,
+			},
+		},
+	},
+});
+
+// Using this you can build the feed
+// Using the posts query, and SQL's `in` operator
+const posts = await prisma.post.findMany({
+	where: {
+		author: {
+			profile: {
+				id: {
+					in: followingIds,
+				},
+			},
+		},
+	},
+	// Include any other fields that you want from the Post model
+	select: {
+		id: true,
+		title: true,
+		content: true,
+		createdAt: true,
+		updatedAt: true,
+	},
+});
+```
+
 TODO -
 
 1. Middleware for protected routes
