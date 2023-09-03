@@ -54,6 +54,17 @@ This is a general purpose social media app
 - Create the `/profile/[userHande]`
   - User can see other's profile
 
+# Post creation + Feed
+
+- User visits Profile page
+
+  - CTA: Create a post
+  - `/create-post` -> create a new post with title & content
+  - Once it is created redirect user to `/profile` page
+
+- In the `/profile` page
+  - We'll add user's personal feed with their own posts
+
 TODO -
 
 1. Middleware for protected routes

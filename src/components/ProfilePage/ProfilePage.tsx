@@ -1,8 +1,15 @@
 "use client";
 
 import { UserProfile } from "@/types/profile";
+import Link from "next/link";
 
-export default function ProfilePage({ data }: { data: UserProfile }) {
+export default function ProfilePage({
+	data,
+	isEditable = false,
+}: {
+	data: UserProfile;
+	isEditable?: boolean;
+}) {
 	return (
 		<div className="flex flex-col border-2 border-primary-foreground flex-1 max-h-[max-content]">
 			<div className="flex gap-1 items-end">
@@ -10,6 +17,14 @@ export default function ProfilePage({ data }: { data: UserProfile }) {
 				<span>@{data.userHandle}</span>
 			</div>
 			<div>{data.bio}</div>
+			{isEditable && (
+				<Link
+					href="/create-post"
+					className="bg-primary text-primary-foreground max-w-[max-content] p-2 rounded-sm"
+				>
+					Create post
+				</Link>
+			)}
 		</div>
 	);
 }

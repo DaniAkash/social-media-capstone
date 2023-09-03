@@ -25,5 +25,5 @@ export default function Page() {
 		return <></>;
 	}
 
-	return <ProfilePage data={profileData} />;
+	return <ProfilePage data={profileData} isEditable={true} />;
 }
