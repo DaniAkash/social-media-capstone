@@ -53,3 +53,8 @@ This is a general purpose social media app
   - User can see thier own profile
 - Create the `/profile/[userHande]`
   - User can see other's profile
+
+TODO -
+
+1. Middleware for protected routes
+2. Nav bar
