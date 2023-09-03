@@ -9,12 +9,12 @@ export async function GET() {
 	const token = cookieStore.get("token")?.value as string;
 
 	if (!token) {
-		return NextResponse.json({ message: "Not authenticated" }, { status: 403 });
+		return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
 	}
 	const tokenPayload = await verify(token);
 
 	if (!tokenPayload) {
-		return NextResponse.json({ message: "Not authenticated" }, { status: 403 });
+		return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
 	}
 
 	try {

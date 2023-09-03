@@ -14,13 +14,13 @@ export async function POST(req: NextRequest) {
 	const token = cookieStore.get("token")?.value;
 
 	if (!token) {
-		return NextResponse.json({ message: "Not authenticated" }, { status: 403 });
+		return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
 	}
 
 	const verifiedTokenData = await verify(token);
 
 	if (!verifiedTokenData) {
-		return NextResponse.json({ message: "Not authenticated" }, { status: 403 });
+		return NextResponse.json({ message: "Not authenticated" }, { status: 401 });
 	}
 
 	try {

@@ -5,6 +5,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
 	const { title, content } = await req.json();
+
+	if (!title || !content) {
+		return NextResponse.json({ error: "Invalid data" }, { status: 400 });
+	}
+
 	const cookieStore = cookies();
 	const token = cookieStore.get("token")?.value || "";
 	if (!token) {

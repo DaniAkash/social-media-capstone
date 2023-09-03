@@ -11,7 +11,7 @@ export default function ProfilePage({
 	isEditable?: boolean;
 }) {
 	return (
-		<div className="flex flex-col border-2 border-primary-foreground flex-1 max-h-[max-content]">
+		<div className="flex flex-col border-2 border-primary-foreground flex-1 max-h-[max-content] gap-2">
 			<div className="flex gap-1 items-end">
 				<span className="text-3xl font-bold">{data.name}</span>
 				<span>@{data.userHandle}</span>
@@ -20,7 +20,7 @@ export default function ProfilePage({
 			{isEditable && (
 				<Link
 					href="/create-post"
-					className="bg-primary text-primary-foreground max-w-[max-content] p-2 rounded-sm"
+					className="bg-primary text-primary-foreground max-w-[max-content] p-2 rounded-sm font-medium"
 				>
 					Create post
 				</Link>
