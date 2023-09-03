@@ -8,9 +8,9 @@ import { useMemo } from "react";
 
 export default function Page() {
 	const { data: userApiData } = useQuery({
-		queryKey: ["user-data"],
+		queryKey: ["profile"],
 		queryFn: async () => {
-			return axios.get(`${process.env.NEXT_PUBLIC_SITE_URL}/api/user-data`);
+			return axios.get(`/api/profile`);
 		},
 	});
 

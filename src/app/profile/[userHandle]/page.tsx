@@ -13,7 +13,7 @@ export default async function Page({
 
 	try {
 		const data = await axios.get(
-			`${process.env.NEXT_PUBLIC_SITE_URL}/api/user-data/${userHandle}`
+			`${process.env.NEXT_PUBLIC_SITE_URL}/api/profile/${userHandle}`
 		);
 
 		if (data.data.user) {
