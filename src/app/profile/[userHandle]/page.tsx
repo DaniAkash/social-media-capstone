@@ -1,28 +1,31 @@
+"use client";
+
 import ProfilePage from "@/components/ProfilePage/ProfilePage";
 import { UserProfile } from "@/types/profile";
+import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import { useParams } from "next/navigation";
+import { useMemo } from "react";
 
-export default async function Page({
-	params,
-}: {
-	params: { userHandle: string };
-}) {
+export default function Page() {
+	const params = useParams();
 	const { userHandle } = params;
+	const { data: userApiData } = useQuery({
+		queryKey: ["profile"],
+		queryFn: async () => {
+			return axios.get(`/api/profile/${userHandle}`);
+		},
+	});
 
-	let profileData: null | UserProfile = null;
-
-	try {
-		const data = await axios.get(
-			`${process.env.NEXT_PUBLIC_SITE_URL}/api/profile/${userHandle}`
-		);
-
-		if (data.data.user) {
-			profileData = data.data.user as UserProfile;
+	const profileData = useMemo(() => {
+		if (userApiData?.data.user) {
+			return userApiData?.data.user as UserProfile;
 		}
-	} catch (error) {}
+		return null;
+	}, [userApiData]);
 
 	if (!profileData) {
-		return <div>Data not found</div>;
+		return <></>;
 	}
 
 	return <ProfilePage data={profileData} />;
