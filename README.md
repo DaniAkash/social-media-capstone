@@ -134,7 +134,7 @@ const posts = await prisma.post.findMany({
 
 ## Implementing the follow feature & the General Home Feed
 
-- User can visit other bio and click follow -> the buton will turn follow to following
+- User can visit other user and click follow -> the button will turn follow to following
 - Display follower count anf following count on all profile pages
 - Display all the posts fro accounts you are following on the feed page
 

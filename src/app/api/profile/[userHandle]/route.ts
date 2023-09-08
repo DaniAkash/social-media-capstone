@@ -1,4 +1,6 @@
 import { prisma } from "@/lib/db";
+import { verify } from "@/lib/jwt";
+import { cookies } from "next/headers";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(
@@ -6,6 +8,13 @@ export async function GET(
 	context: { params: { userHandle: string } }
 ) {
 	const { userHandle } = context.params;
+	const token = cookies().get("token")?.value || "";
+
+	const verifiedToken = await verify(token);
+
+	if (!verifiedToken) {
+		return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+	}
 
 	try {
 		const profile = await prisma.profile.findFirst({
@@ -17,10 +26,21 @@ export async function GET(
 			include: {
 				user: true,
 				posts: true,
+				followers: true,
+				following: true,
 			},
 		});
 
+		let isLoggedInUserFollowing = false;
+
 		if (profile) {
+			if (
+				profile.followers.findIndex(
+					(item) => item.followerId === verifiedToken.payload.id
+				) >= 0
+			) {
+				isLoggedInUserFollowing = true;
+			}
 			return NextResponse.json(
 				{
 					user: {
@@ -30,6 +50,7 @@ export async function GET(
 						userHandle: profile.userHandle,
 						profilePic: profile.profilePic || "",
 						posts: profile.posts,
+						isLoggedInUserFollowing,
 					},
 				},
 				{ status: 200 }

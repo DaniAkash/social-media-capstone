@@ -5,6 +5,7 @@ export interface UserProfile {
 	profilePic: string;
 	userHandle: string;
 	posts: Post[];
+	isLoggedInUserFollowing?: boolean;
 }
 
 export interface Post {
