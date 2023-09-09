@@ -26,7 +26,7 @@ export async function GET(
 			include: {
 				user: true,
 				posts: true,
-				followers: true,
+				currentUsers: true,
 				following: true,
 			},
 		});
@@ -35,8 +35,9 @@ export async function GET(
 
 		if (profile) {
 			if (
-				profile.followers.findIndex(
-					(item) => item.followerId === verifiedToken.payload.id
+				profile.following.findIndex(
+					(item) =>
+						item.currentUserId === Number(verifiedToken.payload.profileId)
 				) >= 0
 			) {
 				isLoggedInUserFollowing = true;
@@ -51,6 +52,9 @@ export async function GET(
 						profilePic: profile.profilePic || "",
 						posts: profile.posts,
 						isLoggedInUserFollowing,
+						profileId: profile.id,
+						followers: profile.following,
+						following: profile.currentUsers,
 					},
 				},
 				{ status: 200 }

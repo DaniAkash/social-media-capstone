@@ -6,6 +6,9 @@ export interface UserProfile {
 	userHandle: string;
 	posts: Post[];
 	isLoggedInUserFollowing?: boolean;
+	profileId: number;
+	followers: any[];
+	following: any[];
 }
 
 export interface Post {

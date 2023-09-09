@@ -10,7 +10,7 @@ import { useMemo } from "react";
 export default function Page() {
 	const params = useParams();
 	const { userHandle } = params;
-	const { data: userApiData } = useQuery({
+	const { data: userApiData, refetch: refetchProfileData } = useQuery({
 		queryKey: ["profile"],
 		queryFn: async () => {
 			return axios.get(`/api/profile/${userHandle}`);
@@ -24,9 +24,13 @@ export default function Page() {
 		return null;
 	}, [userApiData]);
 
+	function refreshProfile() {
+		refetchProfileData();
+	}
+
 	if (!profileData) {
 		return <></>;
 	}
 
-	return <ProfilePage data={profileData} />;
+	return <ProfilePage data={profileData} refreshProfile={refreshProfile} />;
 }

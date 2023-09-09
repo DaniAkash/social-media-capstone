@@ -27,6 +27,8 @@ export async function GET() {
 			include: {
 				user: true,
 				posts: true,
+				currentUsers: true,
+				following: true,
 			},
 		});
 		// const user = await prisma.user.findFirst({
@@ -50,6 +52,9 @@ export async function GET() {
 						userHandle: profile.userHandle || "",
 						profilePic: profile.profilePic || "",
 						posts: profile.posts,
+						profileId: profile.id,
+						followers: profile.following,
+						following: profile.currentUsers,
 					},
 				},
 				{ status: 200 }

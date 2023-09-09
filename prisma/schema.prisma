@@ -47,10 +47,10 @@ model Follow {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  followingId Int     @unique
+  followingId Int
   following   Profile @relation("following", fields: [followingId], references: [id])
 
-  currentUserId Int     @unique
+  currentUserId Int
   currentUser   Profile @relation("currentUserFollow", fields: [currentUserId], references: [id])
 }
 

@@ -7,9 +7,11 @@ import FollowButton from "../FollowButton";
 export default function ProfilePage({
 	data,
 	isEditable = false,
+	refreshProfile,
 }: {
 	data: UserProfile;
 	isEditable?: boolean;
+	refreshProfile?: () => void;
 }) {
 	return (
 		<div className="flex flex-col">
@@ -20,6 +22,10 @@ export default function ProfilePage({
 						<span>@{data.userHandle}</span>
 					</div>
 					<div>{data.bio}</div>
+					<div className="flex gap-2">
+						<span>Followers: {data.followers.length}</span>
+						<span>Following: {data.following.length}</span>
+					</div>
 					{isEditable && (
 						<Link
 							href="/create-post"
@@ -30,7 +36,11 @@ export default function ProfilePage({
 					)}
 				</div>
 				{!isEditable && (
-					<FollowButton isFollowing={data.isLoggedInUserFollowing || false} />
+					<FollowButton
+						isFollowing={data.isLoggedInUserFollowing || false}
+						profileId={data.profileId}
+						refreshProfile={refreshProfile}
+					/>
 				)}
 			</div>
 
