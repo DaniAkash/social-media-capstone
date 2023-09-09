@@ -38,8 +38,8 @@ model Profile {
   userId Int    @unique
   posts  Post[]
 
-  following Follow[] @relation("following")
-  followers Follow[] @relation("follower")
+  following    Follow[] @relation("following")
+  currentUsers Follow[] @relation("currentUserFollow")
 }
 
 model Follow {
@@ -50,8 +50,8 @@ model Follow {
   followingId Int     @unique
   following   Profile @relation("following", fields: [followingId], references: [id])
 
-  followerId Int     @unique
-  follower   Profile @relation("follower", fields: [followerId], references: [id])
+  currentUserId Int     @unique
+  currentUser   Profile @relation("currentUserFollow", fields: [currentUserId], references: [id])
 }
 
 model User {
