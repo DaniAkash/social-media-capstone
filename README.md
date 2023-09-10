@@ -138,7 +138,16 @@ const posts = await prisma.post.findMany({
 - Display follower count anf following count on all profile pages
 - Display all the posts fro accounts you are following on the feed page
 
-TODO -
+## Implementing a comment system
 
-1. Middleware for protected routes
-2. Nav bar
+- User can click on a feed & go to the individual post page
+
+  - /post/[postId]
+  - Input field to create a new comment
+  - CTA to add a like to the post
+
+- APIs that we will need
+  - POST /api/comment - create a new comment for post
+  - GET /api/comment/[postId] - get all comments for a post
+  - POST /api/like - like/unlike a comment
+  - GET /api/like/[postId] - get count of all likes on the post (with if currentUser has liked it)
