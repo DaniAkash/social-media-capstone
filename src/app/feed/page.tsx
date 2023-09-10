@@ -2,6 +2,7 @@
 
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
+import Link from "next/link";
 import { useMemo } from "react";
 
 export default function Page() {
@@ -24,10 +25,12 @@ export default function Page() {
 			Feed
 			{posts.map((item) => {
 				return (
-					<div className="flex flex-col border p-1" key={`post-${item.id}`}>
-						<div>@{item.author.userHandle}</div>
-						<div>{item.content}</div>
-					</div>
+					<Link href={`post/${item.id}`} key={`post-${item.id}`}>
+						<div className="flex flex-col border p-1">
+							<div>@{item.author.userHandle}</div>
+							<div>{item.content}</div>
+						</div>
+					</Link>
 				);
 			})}
 		</div>
